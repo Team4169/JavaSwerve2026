@@ -21,7 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * to the Dashboard.
  */
 public class Robot extends TimedRobot {
-  private static final int kMotorPort = 0;
+  private static final int kMotorPort1 = 0;
+  private static final int kMotorPort2 = 1;
+  private static final int kMotorPort3 = 2;
+  private static final int kMotorPort4 = 3;
+  private static final int kMotorPort5 = 15;
   private static final int kJoystickPort = 0;
   private static final int kEncoderPortA = 0;
   private static final int kEncoderPortB = 1;
@@ -30,15 +34,17 @@ public class Robot extends TimedRobot {
   private final PWMSparkMax m_motor2;
   private final PWMSparkMax m_motor3;
   private final PWMSparkMax m_motor4;
+  private final PWMSparkMax m_motor5;
   private final Joystick m_joystick;
   private final Encoder m_encoder;
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
-    m_motor1 = new PWMSparkMax(kMotorPort);
-    m_motor2 = new PWMSparkMax(kMotorPort);
-    m_motor3 = new PWMSparkMax(kMotorPort);
-    m_motor4 = new PWMSparkMax(kMotorPort);
+    m_motor1 = new PWMSparkMax(kMotorPort1);
+    m_motor2 = new PWMSparkMax(kMotorPort2);
+    m_motor3 = new PWMSparkMax(kMotorPort3);
+    m_motor4 = new PWMSparkMax(kMotorPort4);
+    m_motor5 = new PWMSparkMax(kMotorPort5);
     m_joystick = new Joystick(kJoystickPort);
     m_encoder = new Encoder(kEncoderPortA, kEncoderPortB);
     // Use SetDistancePerPulse to set the multiplier for GetDistance
@@ -62,5 +68,6 @@ public class Robot extends TimedRobot {
     m_motor2.set(m_joystick.getY());
     m_motor3.set(m_joystick.getY());
     m_motor4.set(m_joystick.getY());
+    m_motor5.set(m_joystick.getY());
   }
 }
