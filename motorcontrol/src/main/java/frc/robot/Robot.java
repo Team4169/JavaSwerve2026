@@ -68,6 +68,8 @@ public class Robot extends TimedRobot {
     m_motor2.set(m_joystick.getY());
     m_motor3.set(m_joystick.getY());
     m_motor4.set(m_joystick.getY());
+
+    System.out.println(m_joystick.getY());
     m_motor5.set(m_joystick.getY());
   }
 }
