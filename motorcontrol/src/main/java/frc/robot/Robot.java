@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax; not needed because the motor control robot uses Talon SRXs
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -23,6 +23,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * to the Dashboard.
  */
 public class Robot extends TimedRobot {
+  // below are the CAN IDs for the motors and joysticks. We did not use encoders.
   private static final int kMotorPort1 = 3;
   private static final int kMotorPort2 = 4;
   private static final int kMotorPort3 = 8;
