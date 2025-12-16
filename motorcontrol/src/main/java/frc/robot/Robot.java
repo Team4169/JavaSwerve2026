@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
  * This sample program shows how to control a motor using a joystick. In the operator control part
@@ -21,30 +23,30 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * to the Dashboard.
  */
 public class Robot extends TimedRobot {
-  private static final int kMotorPort1 = 0;
-  private static final int kMotorPort2 = 1;
-  private static final int kMotorPort3 = 2;
-  private static final int kMotorPort4 = 3;
-  private static final int kMotorPort5 = 15;
+  private static final int kMotorPort1 = 3;
+  private static final int kMotorPort2 = 4;
+  private static final int kMotorPort3 = 8;
+  private static final int kMotorPort4 = 9;
+  private static final int kMotorPort5 = 51;
   private static final int kJoystickPort = 0;
   private static final int kEncoderPortA = 0;
   private static final int kEncoderPortB = 1;
 
-  private final PWMSparkMax m_motor1;
-  private final PWMSparkMax m_motor2;
-  private final PWMSparkMax m_motor3;
-  private final PWMSparkMax m_motor4;
-  private final PWMSparkMax m_motor5;
+  private final TalonSRX m_motor1;
+  private final TalonSRX m_motor2;
+  private final TalonSRX m_motor3;
+  private final TalonSRX m_motor4;
+  private final TalonSRX m_motor5;
   private final Joystick m_joystick;
   private final Encoder m_encoder;
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
-    m_motor1 = new PWMSparkMax(kMotorPort1);
-    m_motor2 = new PWMSparkMax(kMotorPort2);
-    m_motor3 = new PWMSparkMax(kMotorPort3);
-    m_motor4 = new PWMSparkMax(kMotorPort4);
-    m_motor5 = new PWMSparkMax(kMotorPort5);
+    m_motor1 = new TalonSRX(kMotorPort1);
+    m_motor2 = new TalonSRX(kMotorPort2);
+    m_motor3 = new TalonSRX(kMotorPort3);
+    m_motor4 = new TalonSRX(kMotorPort4);
+    m_motor5 = new TalonSRX(kMotorPort5);
     m_joystick = new Joystick(kJoystickPort);
     m_encoder = new Encoder(kEncoderPortA, kEncoderPortB);
     // Use SetDistancePerPulse to set the multiplier for GetDistance
@@ -64,12 +66,11 @@ public class Robot extends TimedRobot {
   /** The teleop periodic function is called every control packet in teleop. */
   @Override
   public void teleopPeriodic() {
-    m_motor1.set(m_joystick.getY());
-    m_motor2.set(m_joystick.getY());
-    m_motor3.set(m_joystick.getY());
-    m_motor4.set(m_joystick.getY());
-
-    System.out.println(m_joystick.getY());
-    m_motor5.set(m_joystick.getY());
+    m_motor1.set(ControlMode.PercentOutput, m_joystick.getY());
+    m_motor2.set(ControlMode.PercentOutput, m_joystick.getY());
+    m_motor3.set(ControlMode.PercentOutput, m_joystick.getY());
+    m_motor4.set(ControlMode.PercentOutput, m_joystick.getY());
+    // System.out.println(m_joystick.getY());
+    m_motor5.set(ControlMode.PercentOutput, m_joystick.getY());
   }
 }
