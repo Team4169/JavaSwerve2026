@@ -25,6 +25,7 @@ import edu.wpi.first.math.Matrix;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
   public static class Vision {
         public static final String kCameraName = "Microsoft_LifeCam_HD-3000";

@@ -8,6 +8,8 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -35,10 +37,13 @@ public class RobotContainer {
   private final SwerveSubsystem swerveSubsystem;
   private final SwerveDrive swerveDrive;
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Intake m_Intake = new Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -85,6 +90,10 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
+    m_operatorController.y().whileTrue((m_Intake.foldIntake()));
+    m_operatorController.leftBumper().whileTrue((m_Intake.runIntake()));
+    
   }
 
   /**
