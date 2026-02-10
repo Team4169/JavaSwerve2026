@@ -6,11 +6,21 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public Shooter() {}
+  private static final int kFlywheelMotorPort = 0;
+  private static final int kKickerMotorPort = 1;
 
+  private final SparkFlex m_flywheelMotor;
+  private final SparkFlex m_kickerMotor;
+
+
+  public Shooter() {
+      m_flywheelMotor = new SparkFlex(kFlywheelMotorPort, MotorType.kBrushless);
+      m_kickerMotor = new SparkFlex(kKickerMotorPort, MotorType.kBrushless);
+    }
   /**
    * Example command factory method.
    *
