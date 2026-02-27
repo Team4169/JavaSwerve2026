@@ -11,8 +11,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
 
-  private static final int kIntakeMotorPort = 0;
-  private static final int kFoldMotorPort = 1;
+  private static final int kIntakeMotorPort = 6;
+  private static final int kFoldMotorPort = 2;
 
   private final SparkMax m_intakeMotor;
   private final SparkMax m_foldMotor;
