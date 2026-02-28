@@ -11,7 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
 
-  private static final int kIntakeMotorPort = 6;
+  private static final int kIntakeMotorPort = 7;
   private static final int kFoldMotorPort = 2;
 
   private final SparkMax m_intakeMotor;
@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     m_intakeMotor = new SparkMax(kIntakeMotorPort, MotorType.kBrushless);
-    m_foldMotor = new SparkMax(kIntakeMotorPort, MotorType.kBrushless);
+    m_foldMotor = new SparkMax(kFoldMotorPort, MotorType.kBrushless);
   }
 
   /**
@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase {
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          m_intakeMotor.set(50);
+          m_intakeMotor.set(-0.5);
         });
   }
   public Command foldIntake() {

@@ -10,8 +10,8 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
-  private static final int kFlywheelMotorPort = 0;
-  private static final int kKickerMotorPort = 1;
+  private static final int kFlywheelMotorPort = 35;
+  private static final int kKickerMotorPort = 19;
 
   private final SparkFlex m_flywheelMotor;
   private final SparkFlex m_kickerMotor;
@@ -26,6 +26,26 @@ public class Shooter extends SubsystemBase {
    *
    * @return a command
    */
+  public Command runIntake() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          // run motors in midstage and shooter
+          m_kickerMotor.set(0.5);
+        });
+  }
+  public Command stopIntake() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          // run motors in midstage and shooter
+          m_kickerMotor.set(0.0);
+        });
+  }
   public Command runShooter() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
@@ -33,9 +53,19 @@ public class Shooter extends SubsystemBase {
         () -> {
           /* one-time action goes here */
           // run motors in midstage and shooter
+          m_flywheelMotor.set(0.5);
         });
   }
-
+  public Command stopShooter() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          // run motors in midstage and shooter
+          m_flywheelMotor.set(0.0);
+        });
+  }
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *

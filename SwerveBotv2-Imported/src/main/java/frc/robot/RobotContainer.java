@@ -38,6 +38,7 @@ public class RobotContainer {
   private final SwerveDrive swerveDrive;
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Intake m_Intake = new Intake();
+  private final Shooter m_Shooter = new Shooter();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -89,10 +90,12 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    
+    m_driverController.b().whileTrue(m_Shooter.runIntake());
+    m_driverController.a().whileTrue(m_Shooter.stopIntake());
+    m_driverController.y().whileTrue(m_Shooter.runShooter());
+    m_driverController.x().whileTrue(m_Shooter.stopShooter());
     m_operatorController.y().whileTrue((m_Intake.foldIntake()));
-    m_operatorController.leftBumper().whileTrue((m_Intake.runIntake()));
+    m_driverController.leftBumper().whileTrue((m_Intake.runIntake()));
     
   }
 
