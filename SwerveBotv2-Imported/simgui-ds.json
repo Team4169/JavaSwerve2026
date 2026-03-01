@@ -1,12 +1,7 @@
 {
-  "Joysticks": {
+  "FMS": {
     "window": {
       "visible": false
-    }
-  },
-  "Keyboard 0 Settings": {
-    "window": {
-      "visible": true
     }
   },
   "keyboardJoysticks": [
@@ -97,6 +92,12 @@
       "axisCount": 0,
       "buttonCount": 0,
       "povCount": 0
+    }
+  ],
+  "robotJoysticks": [
+    {
+      "guid": "78696e70757401000000000000000000",
+      "useGamepad": true
     }
   ]
 }
