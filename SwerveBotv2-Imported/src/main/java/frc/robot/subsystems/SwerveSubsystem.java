@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import swervelib.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.geometry.Pose2d; 
 import frc.robot.Vision;
@@ -38,7 +39,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; //WE need to comment ts out for competition
         poseEstimator = new SwerveDrivePoseEstimator(
             swerveDrive.kinematics,
             swerveDrive.getYaw(),
@@ -51,6 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 poseEstimator.addVisionMeasurement(pose, timestamp, stdDevs);
             }
         );
+        SmartDashboard.putData("Field", field);
     }
 
     @Override
@@ -80,6 +82,14 @@ public class SwerveSubsystem extends SubsystemBase {
             swerveDrive.getModulePositions(),
             pose
         );
+    }
+
+    public ChassisSpeeds getSpeeds() { 
+        return swerveDrive.getRobotVelocity(); 
+    } 
+    
+    public void driveRobotRelative(ChassisSpeeds speeds) { 
+        swerveDrive.drive(speeds); 
     }
 }
 

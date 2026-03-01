@@ -12,12 +12,17 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+//import com.pathplannerlib.lib.util.HolonomicDriveController;
 
 
 import java.io.File;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,6 +61,18 @@ public class RobotContainer {
     }
 
     swerveSubsystem = new SwerveSubsystem(swerveDrive);
+    //AutoBuilder.configureHolonomic(
+    //  swerveSubsystem::getPose,
+    //  swerveSubsystem::resetPose,
+    //  swerveSubsystem::getSpeeds,
+    //  swerveSubsystem::driveRobotRelative,
+    //  new HolonomicPathFollowerConfig(
+    //      new PIDConstants(5.0, 0.0, 0.0),
+    //      new PIDConstants(5.0, 0.0, 0.0),
+    //    4.5,
+    //     0.4
+    //  )
+    //);
     // Configure the trigger bindings
     configureBindings();
   }
