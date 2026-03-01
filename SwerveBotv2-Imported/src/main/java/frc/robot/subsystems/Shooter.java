@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
         () -> {
           /* one-time action goes here */
           // run motors in midstage and shooter
-          m_flywheelMotor.set(0.5);
+          m_flywheelMotor.set(-0.51);
         });
   }
   public Command stopShooter() {
