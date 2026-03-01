@@ -35,12 +35,20 @@ public class Intake extends SubsystemBase {
           m_intakeMotor.set(-0.5);
         });
   }
-  public Command foldIntake() {
+  public Command foldupIntake() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          // one-time action goes here
+          m_foldMotor.set(-0.1);
+        });
+  }
+  public Command folddownIntake() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          m_foldMotor.set(0.1);
         });
   }
 }
