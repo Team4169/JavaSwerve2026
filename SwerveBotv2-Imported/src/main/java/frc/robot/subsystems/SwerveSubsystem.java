@@ -3,6 +3,15 @@ package frc.robot.subsystems;
 import swervelib.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.math.geometry.Pose2d; 
+import frc.robot.Vision;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 //public class SwerveSubsystem extends SubsystemBase {
 
@@ -24,10 +33,12 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
     private final SwerveDrivePoseEstimator poseEstimator;
     private final Vision vision;
+    private final Field2d field = new Field2d();
+
 
     public SwerveSubsystem(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
-
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         poseEstimator = new SwerveDrivePoseEstimator(
             swerveDrive.kinematics,
             swerveDrive.getYaw(),
@@ -48,7 +59,7 @@ public class SwerveSubsystem extends SubsystemBase {
             swerveDrive.getYaw(),
             swerveDrive.getModulePositions()
         );
-
+        field.setRobotPose(poseEstimator.getEstimatedPosition());
         vision.periodic();
     }
 
