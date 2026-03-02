@@ -18,12 +18,13 @@ public class Shooter extends SubsystemBase {
   private final SparkFlex m_flywheelMotor;
   private final SparkFlex m_kickerMotor;
   private final SparkMax m_auxKickerMotor;
+//switch direction
 
 
   public Shooter() {
       m_flywheelMotor = new SparkFlex(kFlywheelMotorPort, MotorType.kBrushless);
       m_kickerMotor = new SparkFlex(kKickerMotorPort, MotorType.kBrushless);
-      m_auxKickerMotor = new SparkMax(kAuxKickerMotorPort, MotorType.kBrushless)
+      m_auxKickerMotor = new SparkMax(kAuxKickerMotorPort, MotorType.kBrushless);
     }
   /**
    * Example command factory method.

@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase {
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          m_intakeMotor.set(-0.5);
+          m_intakeMotor.set(-0.8);
         });
   }
   public Command foldupIntake() {
