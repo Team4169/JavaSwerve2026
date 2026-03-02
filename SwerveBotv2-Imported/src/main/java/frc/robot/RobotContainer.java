@@ -94,7 +94,8 @@ public class RobotContainer {
     m_driverController.a().whileTrue(m_Shooter.stopIntake());
     m_driverController.y().whileTrue(m_Shooter.runShooter());
     m_driverController.x().whileTrue(m_Shooter.stopShooter());
-    m_operatorController.y().whileTrue((m_Intake.foldIntake()));
+    m_driverController.leftTrigger().whileTrue((m_Intake.foldIntake(-0.2)));
+    m_driverController.rightTrigger().whileTrue((m_Intake.foldIntake(0.2)));
     m_driverController.leftBumper().whileTrue((m_Intake.runIntake()));
     
   }
