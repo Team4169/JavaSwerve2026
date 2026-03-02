@@ -28,6 +28,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -146,6 +147,7 @@ public class RobotContainer {
     m_operatorController.y().whileTrue((m_Intake.foldupIntake()));
     m_operatorController.a().whileTrue((m_Intake.folddownIntake()));
     m_driverController.leftBumper().whileTrue((m_Intake.runIntake()));
+    m_driverController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
     
   }
 
