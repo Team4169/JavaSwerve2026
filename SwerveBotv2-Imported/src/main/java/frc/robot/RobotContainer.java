@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -13,14 +12,21 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+//import com.pathplannerlib.lib.util.HolonomicDriveController;
 
 
 import java.io.File;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -48,15 +54,31 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    System.out.println(">>> RobotContainer constructor START");
     try {
       swerveDrive = new SwerveParser(
         new File(Filesystem.getDeployDirectory(), "swerve")
       ).createSwerveDrive(Units.feetToMeters(15)); //argument is max speed
+      System.out.println(">>> SwerveDrive created successfully");
     } catch (Exception e) {
+      System.out.println(">>> SwerveDrive FAILED: " + e.getMessage());
       throw new RuntimeException("Failed to initialize swerve drive", e);
     }
 
     swerveSubsystem = new SwerveSubsystem(swerveDrive);
+    System.out.println(">>> SwerveSubsystem created successfully");
+    //AutoBuilder.configureHolonomic(
+    //  swerveSubsystem::getPose,
+    //  swerveSubsystem::resetPose,
+    //  swerveSubsystem::getSpeeds,
+    //  swerveSubsystem::driveRobotRelative,
+    //  new HolonomicPathFollowerConfig(
+    //      new PIDConstants(5.0, 0.0, 0.0),
+    //      new PIDConstants(5.0, 0.0, 0.0),
+    //    4.5,
+    //     0.4
+    //  )
+    //);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -74,12 +96,39 @@ public class RobotContainer {
 
     swerveSubsystem.setDefaultCommand(
       new RunCommand(
-        () -> swerveSubsystem.drive(
-          new Translation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
-            -m_driverController.getRightX(),
-            true,
-            true
-        ),
+        () -> {
+          try {
+            SmartDashboard.putBoolean("Drive Command Running", true);
+
+            double rawLeftY = m_driverController.getLeftY();
+            double rawLeftX = m_driverController.getLeftX();
+            double rawRightX = m_driverController.getRightX();
+            SmartDashboard.putNumber("Raw LeftY", rawLeftY);
+            SmartDashboard.putNumber("Raw LeftX", rawLeftX);
+            SmartDashboard.putNumber("Raw RightX", rawRightX);
+
+            double maxSpeed = swerveDrive.getMaximumChassisVelocity();
+            double maxAngularSpeed = swerveDrive.getMaximumChassisAngularVelocity();
+            SmartDashboard.putNumber("Max Speed", maxSpeed);
+            SmartDashboard.putNumber("Max Angular Speed", maxAngularSpeed);
+
+            double xSpeed = -MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
+            double ySpeed = -MathUtil.applyDeadband(rawLeftX, 0.1) * maxSpeed;
+            double rot = -MathUtil.applyDeadband(rawRightX, 0.1) * maxAngularSpeed;
+            SmartDashboard.putNumber("xSpeed", xSpeed);
+            SmartDashboard.putNumber("ySpeed", ySpeed);
+            SmartDashboard.putNumber("rot", rot);
+
+            swerveSubsystem.drive(
+              new Translation2d(ySpeed, xSpeed),
+              rot,
+              true,
+              false
+            );
+          } catch (Exception e) {
+            SmartDashboard.putString("Drive Error", e.getMessage());
+          }
+        },
         swerveSubsystem
       )
     );
@@ -94,8 +143,8 @@ public class RobotContainer {
     m_driverController.a().whileTrue(m_Shooter.stopIntake());
     m_driverController.y().whileTrue(m_Shooter.runShooter());
     m_driverController.x().whileTrue(m_Shooter.stopShooter());
-    m_driverController.leftTrigger().whileTrue((m_Intake.foldIntake(-0.2)));
-    m_driverController.rightTrigger().whileTrue((m_Intake.foldIntake(0.2)));
+    m_operatorController.y().whileTrue((m_Intake.foldupIntake()));
+    m_operatorController.a().whileTrue((m_Intake.folddownIntake()));
     m_driverController.leftBumper().whileTrue((m_Intake.runIntake()));
     
   }
