@@ -7,19 +7,23 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
   private static final int kFlywheelMotorPort = 35;
   private static final int kKickerMotorPort = 19;
+  private static final int kAuxKickerMotorPort = 21;
 
   private final SparkFlex m_flywheelMotor;
   private final SparkFlex m_kickerMotor;
+  private final SparkMax m_auxKickerMotor;
 
 
   public Shooter() {
       m_flywheelMotor = new SparkFlex(kFlywheelMotorPort, MotorType.kBrushless);
       m_kickerMotor = new SparkFlex(kKickerMotorPort, MotorType.kBrushless);
+      m_auxKickerMotor = new SparkMax(kAuxKickerMotorPort, MotorType.kBrushless)
     }
   /**
    * Example command factory method.
@@ -34,6 +38,7 @@ public class Shooter extends SubsystemBase {
           /* one-time action goes here */
           // run motors in midstage and shooter
           m_kickerMotor.set(0.5);
+          m_auxKickerMotor.set(0.44);
         });
   }
   public Command stopIntake() {
