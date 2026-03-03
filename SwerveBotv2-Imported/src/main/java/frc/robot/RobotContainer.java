@@ -138,16 +138,15 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_Shooter.runIntake());
-    m_driverController.a().whileTrue(m_Shooter.stopIntake());
-    m_driverController.y().whileTrue(m_Shooter.runShooter());
-    m_driverController.x().whileTrue(m_Shooter.stopShooter());
-    m_operatorController.y().whileTrue((m_Intake.foldupIntake()));
-    m_operatorController.a().whileTrue((m_Intake.folddownIntake()));
-    m_driverController.leftBumper().whileTrue((m_Intake.runIntake()));
-    m_driverController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
+    // Operator controller mappings (mechanisms).
+    m_operatorController.y().whileTrue(
+        Commands.parallel(
+            m_Shooter.runShooterAndFeedHeld(),
+            m_Intake.runIntakeHeld()));
+    m_operatorController.a().whileTrue(m_Intake.runIntakeHeld());
+    m_operatorController.leftBumper().whileTrue(m_Intake.foldUpHeld());
+    m_operatorController.rightBumper().whileTrue(m_Intake.foldDownHeld());
+    m_operatorController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
     
   }
 

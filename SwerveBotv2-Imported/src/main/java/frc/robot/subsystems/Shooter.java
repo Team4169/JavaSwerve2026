@@ -32,45 +32,21 @@ public class Shooter extends SubsystemBase {
    * @return a command
    */
   public Command runIntake() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-          // run motors in midstage and shooter
-          m_kickerMotor.set(0.5);
-          m_auxKickerMotor.set(-0.44);
-        });
+    return runOnce(this::startFeedMotors);
   }
   public Command stopIntake() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-          // run motors in midstage and shooter
-          m_kickerMotor.set(0.0);
-        });
+    return runOnce(this::stopFeedMotors);
   }
   public Command runShooter() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-          // run motors in midstage and shooter
-          m_flywheelMotor.set(-0.51);
-        });
+    return runOnce(this::startFlywheelMotor);
   }
+
+  public Command runShooterAndFeedHeld() {
+    return startEnd(this::startShooterAndFeed, this::stopShooterAndFeed);
+  }
+
   public Command stopShooter() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-          // run motors in midstage and shooter
-          m_flywheelMotor.set(0.0);
-        });
+    return runOnce(this::stopFlywheelMotor);
   }
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
@@ -90,5 +66,33 @@ public class Shooter extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+
+  private void startFeedMotors() {
+    m_kickerMotor.set(0.5);
+    m_auxKickerMotor.set(-0.44);
+  }
+
+  private void stopFeedMotors() {
+    m_kickerMotor.stopMotor();
+    m_auxKickerMotor.stopMotor();
+  }
+
+  private void startFlywheelMotor() {
+    m_flywheelMotor.set(-0.51);
+  }
+
+  private void stopFlywheelMotor() {
+    m_flywheelMotor.stopMotor();
+  }
+
+  private void startShooterAndFeed() {
+    startFlywheelMotor();
+    startFeedMotors();
+  }
+
+  private void stopShooterAndFeed() {
+    stopFlywheelMotor();
+    stopFeedMotors();
   }
 }
