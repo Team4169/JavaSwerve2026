@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
           /* one-time action goes here */
           // run motors in midstage and shooter
           m_kickerMotor.set(0.5);
-          m_auxKickerMotor.set(0.44);
+          m_auxKickerMotor.set(-0.44);
         });
   }
   public Command stopIntake() {
