@@ -41,7 +41,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; //WE need to comment ts out for competition
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;//eed to comment ts out for competition
         Object imu = swerveDrive.getGyro().getIMU();
         navx = imu instanceof AHRS ? (AHRS) imu : null;
         SmartDashboard.putBoolean("NavX Detected", navx != null);
@@ -50,7 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
             swerveDrive.kinematics,
             swerveDrive.getYaw(),
             swerveDrive.getModulePositions(),
-            new Pose2d()
+            new Pose2d(8.25, 1.25, new Rotation2d())
         );
 
         vision = new Vision(

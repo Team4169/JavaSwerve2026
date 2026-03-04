@@ -104,9 +104,9 @@ public class RobotContainer {
             double rawLeftY = m_driverController.getLeftY();
             double rawLeftX = m_driverController.getLeftX();
             double rawRightX = m_driverController.getRightX();
-            SmartDashboard.putNumber("Raw LeftY", rawLeftY);
-            SmartDashboard.putNumber("Raw LeftX", rawLeftX);
-            SmartDashboard.putNumber("Raw RightX", rawRightX);
+            // SmartDashboard.putNumber("Raw LeftY", rawLeftY);
+            // SmartDashboard.putNumber("Raw LeftX", rawLeftX);
+            // SmartDashboard.putNumber("Raw RightX", rawRightX);
 
             double maxSpeed = swerveDrive.getMaximumChassisVelocity();
             double maxAngularSpeed = swerveDrive.getMaximumChassisAngularVelocity();
@@ -116,14 +116,14 @@ public class RobotContainer {
             double xSpeed = -MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
             double ySpeed = -MathUtil.applyDeadband(rawLeftX, 0.1) * maxSpeed;
             double rot = -MathUtil.applyDeadband(rawRightX, 0.1) * maxAngularSpeed;
-            SmartDashboard.putNumber("xSpeed", xSpeed);
-            SmartDashboard.putNumber("ySpeed", ySpeed);
-            SmartDashboard.putNumber("rot", rot);
+            // SmartDashboard.putNumber("xSpeed", xSpeed);
+            // SmartDashboard.putNumber("ySpeed", ySpeed);
+            // SmartDashboard.putNumber("rot", rot);
 
             swerveSubsystem.drive(
-              new Translation2d(ySpeed, xSpeed),
+              new Translation2d(xSpeed, ySpeed),
               rot,
-              true,
+              false,
               false
             );
           } catch (Exception e) {
