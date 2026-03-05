@@ -102,6 +102,12 @@ public class SwerveSubsystem extends SubsystemBase {
         resetPose(new Pose2d(current.getTranslation(), Rotation2d.kZero));
     }
 
+    public void initializeToDefaultPositions() {
+        swerveDrive.resetDriveEncoders();
+        swerveDrive.synchronizeModuleEncoders();
+        zeroHeading();
+    }
+
     public boolean isNavXConnected() {
         return navx != null && navx.isConnected();
     }

@@ -67,6 +67,7 @@ public class RobotContainer {
     }
 
     swerveSubsystem = new SwerveSubsystem(swerveDrive);
+    swerveSubsystem.initializeToDefaultPositions();
     System.out.println(">>> SwerveSubsystem created successfully");
     //AutoBuilder.configureHolonomic(
     //  swerveSubsystem::getPose,
