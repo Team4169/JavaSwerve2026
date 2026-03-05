@@ -5,6 +5,7 @@ import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -106,6 +107,14 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.resetDriveEncoders();
         swerveDrive.synchronizeModuleEncoders();
         zeroHeading();
+    }
+
+    public void pointModulesForward() {
+        SwerveModuleState[] forwardStates = new SwerveModuleState[swerveDrive.getStates().length];
+        for (int i = 0; i < forwardStates.length; i++) {
+            forwardStates[i] = new SwerveModuleState(0.0, Rotation2d.kZero);
+        }
+        swerveDrive.setModuleStates(forwardStates, false);
     }
 
     public boolean isNavXConnected() {

@@ -67,7 +67,6 @@ public class RobotContainer {
     }
 
     swerveSubsystem = new SwerveSubsystem(swerveDrive);
-    swerveSubsystem.initializeToDefaultPositions();
     System.out.println(">>> SwerveSubsystem created successfully");
     //AutoBuilder.configureHolonomic(
     //  swerveSubsystem::getPose,
@@ -148,6 +147,8 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(m_Intake.foldUpHeld());
     m_operatorController.rightBumper().whileTrue(m_Intake.foldDownHeld());
     m_operatorController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
+    m_operatorController.b().onTrue(Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
+    m_operatorController.x().onTrue(Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
     
   }
 
