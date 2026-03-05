@@ -41,7 +41,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;//eed to comment ts out for competition
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;//eed to comment ts out for competition
         Object imu = swerveDrive.getGyro().getIMU();
         navx = imu instanceof AHRS ? (AHRS) imu : null;
         SmartDashboard.putBoolean("NavX Detected", navx != null);
