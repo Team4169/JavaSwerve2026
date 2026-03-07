@@ -13,7 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 public class Shooter extends SubsystemBase {
   private static final int kFlywheelMotorPort = 35;
   private static final int kKickerMotorPort = 19;
-  private static final int kAuxKickerMotorPort = 21;
+  private static final int kAuxKickerMotorPort = 9;
 
   private final SparkFlex m_flywheelMotor;
   private final SparkFlex m_kickerMotor;
