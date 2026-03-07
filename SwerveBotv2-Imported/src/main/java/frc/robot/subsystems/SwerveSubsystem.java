@@ -69,12 +69,44 @@ public class SwerveSubsystem extends SubsystemBase {
             swerveDrive.getModulePositions()
         );
         field.setRobotPose(poseEstimator.getEstimatedPosition());
+        
+        // Publish heading and pose data
+        Pose2d currentPose = poseEstimator.getEstimatedPosition();
         SmartDashboard.putNumber("Heading (deg)", swerveDrive.getYaw().getDegrees());
+        SmartDashboard.putNumber("Pose/X", currentPose.getX());
+        SmartDashboard.putNumber("Pose/Y", currentPose.getY());
+        SmartDashboard.putNumber("Pose/Angle", currentPose.getRotation().getDegrees());
+        
+        // Publish chassis speeds
+        ChassisSpeeds speeds = getSpeeds();
+        SmartDashboard.putNumber("Chassis/VelocityX", speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Chassis/VelocityY", speeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Chassis/AngularVelocity", speeds.omegaRadiansPerSecond);
+        
+        // Publish individual swerve module states
+        SwerveModuleState[] moduleStates = swerveDrive.getStates();
+        String[] moduleNames = {"FrontLeft", "FrontRight", "BackLeft", "BackRight"};
+        for (int i = 0; i < moduleStates.length && i < moduleNames.length; i++) {
+            String moduleName = moduleNames[i];
+            SmartDashboard.putNumber("Module/" + moduleName + "/Velocity", moduleStates[i].speedMetersPerSecond);
+            SmartDashboard.putNumber("Module/" + moduleName + "/Angle", moduleStates[i].angle.getDegrees());
+        }
+        
+        // Publish module positions
+        var modulePositions = swerveDrive.getModulePositions();
+        for (int i = 0; i < modulePositions.length && i < moduleNames.length; i++) {
+            String moduleName = moduleNames[i];
+            SmartDashboard.putNumber("ModulePos/" + moduleName + "/Distance", modulePositions[i].distanceMeters);
+            SmartDashboard.putNumber("ModulePos/" + moduleName + "/Angle", modulePositions[i].angle.getDegrees());
+        }
+        
+        // Publish NavX data
         if (navx != null) {
             SmartDashboard.putBoolean("NavX Connected", navx.isConnected());
             SmartDashboard.putBoolean("NavX Calibrating", navx.isCalibrating());
             SmartDashboard.putNumber("NavX Yaw (deg)", navx.getYaw());
         }
+        
         vision.periodic();
     }
 
