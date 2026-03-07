@@ -114,7 +114,7 @@ public class RobotContainer {
             SmartDashboard.putNumber("Max Speed", maxSpeed);
             SmartDashboard.putNumber("Max Angular Speed", maxAngularSpeed);
 
-            double xSpeed = -MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
+            double xSpeed = MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
             double ySpeed = MathUtil.applyDeadband(rawLeftX, 0.1) * maxSpeed;
             double rot = MathUtil.applyDeadband(rawRightX, 0.1) * maxAngularSpeed;
             SmartDashboard.putNumber("xSpeed", xSpeed);
