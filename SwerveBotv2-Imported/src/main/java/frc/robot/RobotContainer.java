@@ -26,6 +26,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -128,6 +129,8 @@ public class RobotContainer {
             );
           } catch (Exception e) {
             SmartDashboard.putString("Drive Error", e.getMessage());
+            DriverStation.reportError("Drive loop exception", e.getStackTrace());
+            throw e;
           }
         },
         swerveSubsystem
@@ -147,8 +150,8 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(m_Intake.foldUpHeld());
     m_operatorController.rightBumper().whileTrue(m_Intake.foldDownHeld());
     m_operatorController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
-    m_operatorController.b().onTrue(Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
-    m_operatorController.x().onTrue(Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
+    m_driverController.b().onTrue(Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
+    m_driverController.x().onTrue(Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
     
   }
 
