@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Auto;
@@ -18,6 +19,8 @@ import frc.robot.Auto;
  * steering and an Xbox controller.
  */
 public class Robot extends TimedRobot {
+  private static final double kShooterSpinupDelaySeconds = 0.5;
+
   private final SparkMax m_frontLeftMotor =
       new SparkMax(Constants.MechanismConstants.frontleftMotorCanId, MotorType.kBrushless);
   private final SparkMax m_frontRightMotor =
@@ -56,6 +59,8 @@ public class Robot extends TimedRobot {
       new SparkFlex(Constants.MechanismConstants.kickerMainCanId, MotorType.kBrushless);
   private final SparkMax kickerAuxMotor =
       new SparkMax(Constants.MechanismConstants.kickerAuxCanId, MotorType.kBrushless);
+
+  private double shootSequenceStartTime = -1.0;
 
   private Auto m_auto;
 
@@ -106,11 +111,25 @@ public class Robot extends TimedRobot {
     boolean foldDown = m_operatorController.getRawButton(Constants.OperatorConstants.foldDownButton);
 
     if (runFullShootSequence) {
+      if (shootSequenceStartTime < 0.0) {
+        shootSequenceStartTime = Timer.getFPGATimestamp();
+      }
+
       shooterMotor.set(-0.51);
-      kickerMainMotor.set(0.5);
-      kickerAuxMotor.set(-0.44);
-      intakeMotor.set(-0.8);
+
+      boolean shooterSpunUp =
+          Timer.getFPGATimestamp() - shootSequenceStartTime >= kShooterSpinupDelaySeconds;
+      if (shooterSpunUp) {
+        kickerMainMotor.set(0.5);
+        kickerAuxMotor.set(-0.44);
+        intakeMotor.set(-0.8);
+      } else {
+        kickerMainMotor.stopMotor();
+        kickerAuxMotor.stopMotor();
+        intakeMotor.stopMotor();
+      }
     } else {
+      shootSequenceStartTime = -1.0;
       shooterMotor.stopMotor();
       kickerMainMotor.stopMotor();
       kickerAuxMotor.stopMotor();
