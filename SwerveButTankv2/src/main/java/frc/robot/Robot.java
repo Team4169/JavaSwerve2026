@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
     if (foldUp == foldDown) {
       intakeFoldMotor.stopMotor();
     } else if (foldUp) {
-      intakeFoldMotor.set(-0.1);
+      intakeFoldMotor.set(-0.25);
     } else {
       intakeFoldMotor.set(0.1);
     }

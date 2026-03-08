@@ -29,10 +29,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Auto {
 
     // ── Tuning constants ──────────────────────────────────────────────────
-    private static final double DRIVE_SPEED = 0.4;  // backward drive power
+    private static final double DRIVE_SPEED = -0.4;  // backward drive power
     private static final double FOLD_TIME   = 0.4;  // seconds to fold intake down
     private static final double DRIVE_TIME  = 2.0;  // seconds to drive back — TUNE ME
-    private static final double SHOOT_TIME  = 2.5;  // seconds to shoot
+    private static final double SHOOT_TIME  = 7;  // seconds to shoot
 
     // ── Auto phases ───────────────────────────────────────────────────────
     private enum Phase { FOLDING_DOWN, DRIVING, SHOOTING, DONE }
