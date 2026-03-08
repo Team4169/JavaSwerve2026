@@ -67,12 +67,10 @@ public class Robot extends TimedRobot {
     m_frontRobotDrive.tankDrive(leftSpeed, rightSpeed);
     m_backRobotDrive.tankDrive(leftSpeed, rightSpeed);
 
-    boolean runFullShootSequence =
-        m_operatorController.getRawButton(Constants.OperatorConstants.shootButton);
-    boolean runIntakeOnly =
-        m_operatorController.getRawButton(Constants.OperatorConstants.intakeButton);
-    boolean foldUp = m_operatorController.getRawButton(Constants.OperatorConstants.foldUpButton);
-    boolean foldDown = m_operatorController.getRawButton(Constants.OperatorConstants.foldDownButton);
+    boolean runFullShootSequence = m_operatorController.getBButton();
+    boolean runIntakeOnly = m_operatorController.getAButton();
+    boolean foldUp = m_operatorController.getLeftBumperButton();
+    boolean foldDown = m_operatorController.getRightBumperButton();
 
     if (runFullShootSequence) {
       shooterMotor.set(-0.51);
