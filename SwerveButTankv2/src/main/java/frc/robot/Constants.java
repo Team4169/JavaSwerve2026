@@ -27,6 +27,12 @@ public final class Constants {
     public static final int backrightMotorCanId = 10;//todo;
     public static final int frontrightMotorCanId = 18;//todo;
     public static final int frontleftMotorCanId = 33;//todo;
+
+    public static final int frontleftTurnMotorCanId = 52;
+    public static final int frontrightTurnMotorCanId = 4;
+    public static final int backleftTurnMotorCanId = 5;
+    public static final int backrightTurnMotorCanId = 51;
+
     private MechanismConstants() {}
   }
 }

@@ -25,10 +25,21 @@ public class Robot extends TimedRobot {
       new SparkMax(Constants.MechanismConstants.backleftMotorCanId, MotorType.kBrushless);
   private final SparkMax m_backRightMotor =
       new SparkMax(Constants.MechanismConstants.backrightMotorCanId, MotorType.kBrushless);
+  
+  private final SparkMax m_backRightTurnMotor =
+      new SparkMax(Constants.MechanismConstants.backrightTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_backLeftTurnMotor =
+      new SparkMax(Constants.MechanismConstants.backleftTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_frontRightTurnMotor =
+      new SparkMax(Constants.MechanismConstants.frontrightTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_frontLeftTurnMotor =
+      new SparkMax(Constants.MechanismConstants.frontleftTurnMotorCanId, MotorType.kBrushless);
+      
   private final DifferentialDrive m_frontRobotDrive =
       new DifferentialDrive(m_frontLeftMotor::set, m_frontRightMotor::set);
   private final DifferentialDrive m_backRobotDrive =
       new DifferentialDrive(m_backLeftMotor::set, m_backRightMotor::set);
+
   private final XboxController m_driverController =
       new XboxController(Constants.OperatorConstants.driverControllerPort);
   private final XboxController m_operatorController =
@@ -61,6 +72,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    m_backLeftMotor.set(0);
+    m_backRightMotor.set(0);
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
+
     double leftSpeed = -m_driverController.getLeftY();
     double rightSpeed = -m_driverController.getRightY();
 
