@@ -11,6 +11,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Auto;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with tank
@@ -56,6 +57,8 @@ public class Robot extends TimedRobot {
   private final SparkMax kickerAuxMotor =
       new SparkMax(Constants.MechanismConstants.kickerAuxCanId, MotorType.kBrushless);
 
+  private Auto m_auto;
+
   /** Called once at the beginning of the robot program. */
   public Robot() {
     SendableRegistry.addChild(m_frontRobotDrive, m_frontLeftMotor);
@@ -68,6 +71,20 @@ public class Robot extends TimedRobot {
     // gearbox is constructed, you might have to invert the left side instead.
     m_frontRightMotor.setInverted(true);
     m_backRightMotor.setInverted(true);
+
+    m_auto = new Auto(
+    m_frontLeftMotor,
+    m_frontRightMotor,
+    m_backLeftMotor,
+    m_backRightMotor,
+    m_frontRobotDrive,
+    m_backRobotDrive,
+    intakeMotor,
+    intakeFoldMotor,
+    shooterMotor,
+    kickerMainMotor,
+    kickerAuxMotor
+);
   }
 
   @Override
@@ -114,6 +131,20 @@ public class Robot extends TimedRobot {
     }
   }
 
+  @Override
+  public void autonomousInit() {
+      m_auto.init();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+      m_auto.update();
+  }
+
+  @Override
+  public void autonomousExit() {
+      m_auto.stop();
+}
   @Override
   public void disabledInit() {
     stopMechanisms();
