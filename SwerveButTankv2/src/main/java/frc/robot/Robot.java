@@ -11,19 +11,24 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with tank
  * steering and an Xbox controller.
  */
 public class Robot extends TimedRobot {
-  private final PWMSparkMax m_leftMotor =
-      new PWMSparkMax(Constants.DriveConstants.leftMotorPwmPort);
-  private final PWMSparkMax m_rightMotor =
-      new PWMSparkMax(Constants.DriveConstants.rightMotorPwmPort);
-  private final DifferentialDrive m_robotDrive =
-      new DifferentialDrive(m_leftMotor::set, m_rightMotor::set);
+  private final SparkMax m_frontLeftMotor =
+      new SparkMax(Constants.MechanismConstants.frontleftMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_frontRightMotor =
+      new SparkMax(Constants.MechanismConstants.frontrightMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_backLeftMotor =
+      new SparkMax(Constants.MechanismConstants.backleftMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_backRightMotor =
+      new SparkMax(Constants.MechanismConstants.backrightMotorCanId, MotorType.kBrushless);
+  private final DifferentialDrive m_frontRobotDrive =
+      new DifferentialDrive(m_frontLeftMotor::set, m_frontRightMotor::set);
+  private final DifferentialDrive m_backRobotDrive =
+      new DifferentialDrive(m_backLeftMotor::set, m_backRightMotor::set);
   private final XboxController m_driverController =
       new XboxController(Constants.OperatorConstants.driverControllerPort);
   private final XboxController m_operatorController =
@@ -42,18 +47,25 @@ public class Robot extends TimedRobot {
 
   /** Called once at the beginning of the robot program. */
   public Robot() {
-    SendableRegistry.addChild(m_robotDrive, m_leftMotor);
-    SendableRegistry.addChild(m_robotDrive, m_rightMotor);
+    SendableRegistry.addChild(m_frontRobotDrive, m_frontLeftMotor);
+    SendableRegistry.addChild(m_frontRobotDrive, m_frontRightMotor);
+    SendableRegistry.addChild(m_backRobotDrive, m_backLeftMotor);
+    SendableRegistry.addChild(m_backRobotDrive, m_backRightMotor);
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_rightMotor.setInverted(true);
+    m_frontRightMotor.setInverted(true);
+    m_backRightMotor.setInverted(true);
   }
 
   @Override
   public void teleopPeriodic() {
-    m_robotDrive.tankDrive(-m_driverController.getLeftY(), -m_driverController.getRightY());
+    double leftSpeed = -m_driverController.getLeftY();
+    double rightSpeed = -m_driverController.getRightY();
+
+    m_frontRobotDrive.tankDrive(leftSpeed, rightSpeed);
+    m_backRobotDrive.tankDrive(leftSpeed, rightSpeed);
 
     boolean runFullShootSequence = m_operatorController.getYButton();
     boolean runIntakeOnly = m_operatorController.getAButton();
