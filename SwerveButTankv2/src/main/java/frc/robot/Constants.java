@@ -1,11 +1,17 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 public final class Constants {
   private Constants() {}
 
   public static final class OperatorConstants {
     public static final int driverControllerPort = 0;
     public static final int operatorControllerPort = 1;
+    public static final int shootButton = XboxController.Button.kY.value;
+    public static final int intakeButton = XboxController.Button.kA.value;
+    public static final int foldUpButton = XboxController.Button.kLeftBumper.value;
+    public static final int foldDownButton = XboxController.Button.kRightBumper.value;
 
     private OperatorConstants() {}
   }
