@@ -11,6 +11,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Auto;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with tank
@@ -25,10 +26,21 @@ public class Robot extends TimedRobot {
       new SparkMax(Constants.MechanismConstants.backleftMotorCanId, MotorType.kBrushless);
   private final SparkMax m_backRightMotor =
       new SparkMax(Constants.MechanismConstants.backrightMotorCanId, MotorType.kBrushless);
+  
+  private final SparkMax m_backRightTurnMotor =
+      new SparkMax(Constants.MechanismConstants.backrightTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_backLeftTurnMotor =
+      new SparkMax(Constants.MechanismConstants.backleftTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_frontRightTurnMotor =
+      new SparkMax(Constants.MechanismConstants.frontrightTurnMotorCanId, MotorType.kBrushless);
+  private final SparkMax m_frontLeftTurnMotor =
+      new SparkMax(Constants.MechanismConstants.frontleftTurnMotorCanId, MotorType.kBrushless);
+      
   private final DifferentialDrive m_frontRobotDrive =
       new DifferentialDrive(m_frontLeftMotor::set, m_frontRightMotor::set);
   private final DifferentialDrive m_backRobotDrive =
       new DifferentialDrive(m_backLeftMotor::set, m_backRightMotor::set);
+
   private final XboxController m_driverController =
       new XboxController(Constants.OperatorConstants.driverControllerPort);
   private final XboxController m_operatorController =
@@ -45,6 +57,8 @@ public class Robot extends TimedRobot {
   private final SparkMax kickerAuxMotor =
       new SparkMax(Constants.MechanismConstants.kickerAuxCanId, MotorType.kBrushless);
 
+  private Auto m_auto;
+
   /** Called once at the beginning of the robot program. */
   public Robot() {
     SendableRegistry.addChild(m_frontRobotDrive, m_frontLeftMotor);
@@ -57,10 +71,29 @@ public class Robot extends TimedRobot {
     // gearbox is constructed, you might have to invert the left side instead.
     m_frontRightMotor.setInverted(true);
     m_backRightMotor.setInverted(true);
+
+    m_auto = new Auto(
+    m_frontLeftMotor,
+    m_frontRightMotor,
+    m_backLeftMotor,
+    m_backRightMotor,
+    m_frontRobotDrive,
+    m_backRobotDrive,
+    intakeMotor,
+    intakeFoldMotor,
+    shooterMotor,
+    kickerMainMotor,
+    kickerAuxMotor
+);
   }
 
   @Override
   public void teleopPeriodic() {
+    m_backLeftMotor.set(0);
+    m_backRightMotor.set(0);
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
+
     double leftSpeed = -m_driverController.getLeftY();
     double rightSpeed = -m_driverController.getRightY();
 
@@ -98,6 +131,20 @@ public class Robot extends TimedRobot {
     }
   }
 
+  @Override
+  public void autonomousInit() {
+      m_auto.init();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+      m_auto.update();
+  }
+
+  @Override
+  public void autonomousExit() {
+      m_auto.stop();
+}
   @Override
   public void disabledInit() {
     stopMechanisms();
