@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import swervelib.SwerveDrive;
+import swervelib.parser.SwerveDriveConfiguration;
+
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.ModuleState;
 import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -80,6 +83,8 @@ public class SwerveSubsystem extends SubsystemBase {
         // Publish chassis speeds
         ChassisSpeeds speeds = getSpeeds();
         SmartDashboard.putNumber("Chassis/VelocityX", speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Chassis/VelocityY", speeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Chassis/AngularVelocity", speeds.omegaRadiansPerSecond);
         SmartDashboard.putNumber("Chassis/VelocityY", speeds.vyMetersPerSecond);
         SmartDashboard.putNumber("Chassis/AngularVelocity", speeds.omegaRadiansPerSecond);
         
