@@ -31,7 +31,7 @@ public class Auto {
     // ── Tuning constants ──────────────────────────────────────────────────
     private static final double DRIVE_SPEED = -0.4;  // backward drive power
     private static final double FOLD_TIME   = 0.4;  // seconds to fold intake down
-    private static final double DRIVE_TIME  = 2.0;  // seconds to drive back — TUNE ME
+    private static final double DRIVE_TIME  = 4.2;  // seconds to drive back — TUNE ME
     private static final double SHOOT_TIME  = 7;  // seconds to shoot
 
     // ── Auto phases ───────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ public class Auto {
                     m_timer.reset();
                     m_phase = Phase.SHOOTING;
                     // Start full shoot sequence (same values as teleop Y button).
-                    m_shooterMotor.set(-0.51);
+                    m_shooterMotor.set(-0.4);
                     m_kickerMainMotor.set(0.5);
                     m_kickerAuxMotor.set(-0.44);
                     m_intakeMotor.set(-0.8);

@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
     boolean runFullShootSequence = m_operatorController.getRawButton(Constants.OperatorConstants.shootButton);
     boolean runIntakeOnly = m_operatorController.getRawButton(Constants.OperatorConstants.intakeButton);
     boolean foldUp = m_operatorController.getRawButton(Constants.OperatorConstants.foldUpButton);
-    boolean foldDown = m_operatorController.getRawButton(Constants.OperatorConstants.foldDownButton);
+    boolean foldDown = m_operatorController.getRawButton(Constants.OperatorConstants.foldDownButton) || m_operatorController.getRawButton(Constants.OperatorConstants.intakeButton);
 
     if (runFullShootSequence) {
       if (shootSequenceStartTime < 0.0) {
@@ -118,10 +118,11 @@ public class Robot extends TimedRobot {
       shooterMotor.set(-0.51);
 
       boolean shooterSpunUp =
-          Timer.getFPGATimestamp() - shootSequenceStartTime >= kShooterSpinupDelaySeconds;
+          // Timer.getFPGATimestamp() - shootSequenceStartTime >= kShooterSpinupDelaySeconds;
+          true;
       if (shooterSpunUp) {
         kickerMainMotor.set(0.5);
-        kickerAuxMotor.set(-0.44);
+        kickerAuxMotor.set(0.44);
         intakeMotor.set(-0.8);
       } else {
         kickerMainMotor.stopMotor();
@@ -142,7 +143,8 @@ public class Robot extends TimedRobot {
     }
 
     if (foldUp == foldDown) {
-      intakeFoldMotor.stopMotor();
+      //intakeFoldMotor.stopMotor();
+      intakeFoldMotor.set(0.01);
     } else if (foldUp) {
       intakeFoldMotor.set(-0.25);
     } else {
