@@ -11,11 +11,11 @@
   },
   "angle": {
     "type": "sparkmax_neo",
-    "id": 51
+    "id": 25
   },
   "encoder": {
     "type": "attached",
-    "id": 14
+    "id": 25
   },
   "inverted": {
     "drive": true,

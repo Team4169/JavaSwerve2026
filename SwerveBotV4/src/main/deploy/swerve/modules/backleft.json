@@ -15,7 +15,7 @@
   },
   "encoder": {
     "type": "attached",
-    "id": 12
+    "id": 5
   },
   "inverted": {
     "drive": true,
