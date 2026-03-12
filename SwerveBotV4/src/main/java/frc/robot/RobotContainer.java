@@ -200,8 +200,8 @@ public class RobotContainer {
     // Register named commands BEFORE building auto chooser
     NamedCommands.registerCommand(
         "shoot",
-        Commands.parallel(m_Shooter.runShooterAndFeedHeld(), m_Intake.runIntakeHeld()));
-    NamedCommands.registerCommand("intake", m_Intake.runIntakeHeld());
+        Commands.parallel(m_Shooter.runShooter(), m_Intake.folddownIntake()));
+    NamedCommands.registerCommand("intake", m_Intake.runIntake());
 
     // Build auto chooser AFTER named commands are registered
     autoChooser = AutoBuilder.buildAutoChooser();
