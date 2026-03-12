@@ -14,7 +14,7 @@
     "id": 4
   },
   "encoder": {
-    "type": "cancoder",
+    "type": "attached",
     "id": 15
   },
   "inverted": {

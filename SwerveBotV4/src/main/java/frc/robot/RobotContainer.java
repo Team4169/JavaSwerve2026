@@ -77,14 +77,14 @@ public class RobotContainer {
                 SmartDashboard.putNumber("Max Speed", maxSpeed);
                 SmartDashboard.putNumber("Max Angular Speed", maxAngularSpeed);
 
-                double xSpeed = MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
-                double ySpeed = MathUtil.applyDeadband(rawLeftX, 0.1) * maxSpeed;
+                double xSpeed = -MathUtil.applyDeadband(rawLeftY, 0.1) * maxSpeed;
+                double ySpeed = -MathUtil.applyDeadband(rawLeftX, 0.1) * maxSpeed;
                 double rot = MathUtil.applyDeadband(rawRightX, 0.1) * maxAngularSpeed;
                 SmartDashboard.putNumber("xSpeed", xSpeed);
                 SmartDashboard.putNumber("ySpeed", ySpeed);
                 SmartDashboard.putNumber("rot", rot);
 
-                swerveSubsystem.drive(new Translation2d(xSpeed, ySpeed), rot, false, false);
+                swerveSubsystem.drive(new Translation2d(xSpeed, ySpeed), rot,false, false);
               } catch (Exception e) {
                 SmartDashboard.putString("Drive Error", e.getMessage());
               }
