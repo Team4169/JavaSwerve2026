@@ -1,6 +1,11 @@
 package frc.robot.subsystems;
 
 import swervelib.SwerveDrive;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -51,14 +56,45 @@ public class SwerveSubsystem extends SubsystemBase {
 
     vision = new Vision((pose, timestamp, stdDevs) -> poseEstimator.addVisionMeasurement(pose, timestamp, stdDevs));
     SmartDashboard.putData("Field", field);
+        RobotConfig config;
+    try {
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("Failed to load PathPlanner RobotConfig", e);
+    }
+
+    AutoBuilder.configure(
+        this::getPose,
+        this::resetPose,
+        this::getSpeeds,
+        (speeds, feedforwards) -> driveRobotRelative(speeds),
+        new PPHolonomicDriveController(
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID
+            new PIDConstants(5.0, 0.0, 0.0)  // Rotation PID
+        ),
+        config,
+        () -> {
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        this
+    );
   }
 
   @Override
   public void periodic() {
     if (!startupSyncDone && startupSyncTimer.hasElapsed(1.5)) {
-      synchronizeToAbsoluteEncoders();
-      startupSyncDone = true;
-      SmartDashboard.putBoolean("Swerve/StartupSyncDone", true);
+      if (DriverStation.isDisabled()) {
+        synchronizeToAbsoluteEncoders();
+        startupSyncDone = true;
+        SmartDashboard.putBoolean("Swerve/StartupSyncDone", true);
+      } else {
+        SmartDashboard.putString("Swerve/StartupSyncStatus", "Waiting for Disabled");
+      }
     }
 
     poseEstimator.update(swerveDrive.getYaw(), swerveDrive.getModulePositions());
