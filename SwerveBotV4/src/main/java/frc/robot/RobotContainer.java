@@ -257,8 +257,8 @@ public class RobotContainer {
     // Utility commands
     m_operatorController.start().onTrue(
         Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
-    m_operatorController.b().onTrue(
-        Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
+    // m_operatorController.b().onTrue(
+    //     Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
     m_operatorController.x().onTrue(
         Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
   }
