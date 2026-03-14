@@ -84,7 +84,7 @@ public class RobotContainer {
                 SmartDashboard.putNumber("ySpeed", ySpeed);
                 SmartDashboard.putNumber("rot", rot);
 
-                swerveSubsystem.drive(new Translation2d(xSpeed, ySpeed), rot, false, false);
+                swerveSubsystem.drive(new Translation2d(xSpeed, ySpeed), rot, true, false);
               } catch (Exception e) {
                 SmartDashboard.putString("Drive Error", e.getMessage());
               }

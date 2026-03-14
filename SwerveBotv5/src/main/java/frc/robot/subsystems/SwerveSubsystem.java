@@ -57,9 +57,13 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (!startupSyncDone && startupSyncTimer.hasElapsed(1.5)) {
-      synchronizeToAbsoluteEncoders();
-      startupSyncDone = true;
-      SmartDashboard.putBoolean("Swerve/StartupSyncDone", true);
+      if (DriverStation.isDisabled()) {
+        synchronizeToAbsoluteEncoders();
+        startupSyncDone = true;
+        SmartDashboard.putBoolean("Swerve/StartupSyncDone", true);
+      } else {
+        SmartDashboard.putString("Swerve/StartupSyncStatus", "Waiting for Disabled");
+      }
     }
 
     poseEstimator.update(swerveDrive.getYaw(), swerveDrive.getModulePositions());
