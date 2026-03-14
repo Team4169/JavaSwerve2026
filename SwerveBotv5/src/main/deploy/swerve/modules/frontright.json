@@ -14,8 +14,8 @@
     "id": 4
   },
   "encoder": {
-    "type": "throughbore",
-    "id": 1
+    "type": "attached",
+    "id": 0
   },
   "inverted": {
     "drive": true,
