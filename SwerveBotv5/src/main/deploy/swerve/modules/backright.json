@@ -14,12 +14,12 @@
     "id": 25
   },
   "encoder": {
-    "type": "sparkmax_analog",
-    "id": 25
+    "type": "attached",
+    "id": 0
   },
   "inverted": {
     "drive": true,
     "angle": true
   },
-  "absoluteEncoderInverted": false
+  "absoluteEncoderInverted": true
 }
