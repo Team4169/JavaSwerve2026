@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import swervelib.SwerveDrive;
+import swervelib.SwerveModule;
 import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -125,6 +126,72 @@ public class SwerveSubsystem extends SubsystemBase {
     synchronizeToAbsoluteEncoders();
     zeroHeading();
     SmartDashboard.putString("Swerve/SyncStatus", "Applied");
+  }
+
+  public void publishAbsoluteEncoderSnapshot() {
+    if (!DriverStation.isDisabled()) {
+      SmartDashboard.putString("Swerve/CalibrationSnapshot", "Ignored (not disabled)");
+      return;
+    }
+
+    SwerveModule[] modules = swerveDrive.getModules();
+    for (int i = 0; i < modules.length; i++) {
+      SwerveModule module = modules[i];
+      String moduleName = module.getConfiguration().name != null
+          ? module.getConfiguration().name
+          : "Module" + i;
+
+      double rawAbs = module.getRawAbsolutePosition();
+      double adjustedAbs = module.getAbsolutePosition();
+      double relative = module.getRelativePosition();
+      boolean readIssue = module.getAbsoluteEncoderReadIssue();
+
+      SmartDashboard.putNumber("Calibration/" + moduleName + "/RawAbsoluteDeg", rawAbs);
+      SmartDashboard.putNumber("Calibration/" + moduleName + "/AdjustedAbsoluteDeg", adjustedAbs);
+      SmartDashboard.putNumber("Calibration/" + moduleName + "/RelativeDeg", relative);
+      SmartDashboard.putBoolean("Calibration/" + moduleName + "/ReadIssue", readIssue);
+
+      System.out.printf("[Calibration] %s raw=%.3f adjusted=%.3f relative=%.3f readIssue=%s%n",
+          moduleName, rawAbs, adjustedAbs, relative, readIssue);
+    }
+
+    SmartDashboard.putString("Swerve/CalibrationSnapshot",
+        String.format("Captured @ %.3f", Timer.getFPGATimestamp()));
+  }
+
+  public void publishOffsetDeltaSuggestions() {
+    if (!DriverStation.isDisabled()) {
+      SmartDashboard.putString("Swerve/OffsetSuggestion", "Ignored (not disabled)");
+      return;
+    }
+
+    SwerveModule[] modules = swerveDrive.getModules();
+    for (int i = 0; i < modules.length; i++) {
+      SwerveModule module = modules[i];
+      String moduleName = module.getConfiguration().name != null
+          ? module.getConfiguration().name
+          : "Module" + i;
+
+      double adjustedAbs = module.getAbsolutePosition();
+      double deltaToZeroDeg = normalizeDeg(-adjustedAbs);
+
+      SmartDashboard.putNumber("Calibration/" + moduleName + "/OffsetDeltaToZeroDeg", deltaToZeroDeg);
+      System.out.printf("[Calibration] %s adjusted=%.3f deltaToZero=%.3f%n",
+          moduleName, adjustedAbs, deltaToZeroDeg);
+    }
+
+    SmartDashboard.putString("Swerve/OffsetSuggestion",
+        String.format("Captured @ %.3f", Timer.getFPGATimestamp()));
+  }
+
+  private static double normalizeDeg(double deg) {
+    double normalized = deg % 360.0;
+    if (normalized > 180.0) {
+      normalized -= 360.0;
+    } else if (normalized <= -180.0) {
+      normalized += 360.0;
+    }
+    return normalized;
   }
 
   public void synchronizeToAbsoluteEncoders() {

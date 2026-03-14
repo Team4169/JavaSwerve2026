@@ -100,8 +100,16 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(m_Intake.foldUpHeld());
     m_operatorController.rightBumper().whileTrue(m_Intake.foldDownHeld());
     m_operatorController.start().onTrue(Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
-    m_operatorController.b().onTrue(
-        Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
+
+    // Pit checklist (disabled): X -> align modules forward, B -> initialize + snapshot + delta suggestions.
+    // Back captures snapshot + delta suggestions again without reinitializing.
+    m_operatorController.b().onTrue(Commands.sequence(
+      Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem),
+      Commands.runOnce(swerveSubsystem::publishAbsoluteEncoderSnapshot, swerveSubsystem),
+      Commands.runOnce(swerveSubsystem::publishOffsetDeltaSuggestions, swerveSubsystem)));
+    m_operatorController.back().onTrue(Commands.sequence(
+      Commands.runOnce(swerveSubsystem::publishAbsoluteEncoderSnapshot, swerveSubsystem),
+      Commands.runOnce(swerveSubsystem::publishOffsetDeltaSuggestions, swerveSubsystem)));
     m_operatorController.x().onTrue(Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
   }
 
