@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.OperatorConstants;
+
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -18,8 +21,9 @@ public class Shooter extends SubsystemBase {
   private final SparkFlex m_flywheelMotor;
   private final SparkFlex m_kickerMotor;
   private final SparkMax m_auxKickerMotor;
-
+  private final CommandXboxController m_operatorController;
   public Shooter() {
+    m_operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     m_flywheelMotor = new SparkFlex(kFlywheelMotorPort, MotorType.kBrushless);
     m_kickerMotor = new SparkFlex(kKickerMotorPort, MotorType.kBrushless);
     m_auxKickerMotor = new SparkMax(kAuxKickerMotorPort, MotorType.kBrushless);
@@ -72,7 +76,7 @@ public class Shooter extends SubsystemBase {
   }
 
   private void startFlywheelMotor() {
-    m_flywheelMotor.set(-0.51);
+    m_flywheelMotor.set(-Math.abs(m_operatorController.getLeftY())); // -0.51 before variable shooter power
   }
 
   private void stopFlywheelMotor() {
