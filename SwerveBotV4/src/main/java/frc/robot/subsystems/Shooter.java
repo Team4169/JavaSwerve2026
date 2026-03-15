@@ -80,7 +80,7 @@ public class Shooter extends SubsystemBase {
 
   private void startFlywheelMotor() {
     m_flywheelMotor.set(-Math.abs(m_operatorController.getLeftY()));
-     // -0.51 before v  ariable shooter power
+     // -0.51 before variable shooter power
      //m_flywheelMotor.set(-0.51);
   }
 
@@ -116,4 +116,20 @@ public class Shooter extends SubsystemBase {
     stopFlywheelMotor();
     stopFeedMotors();
   }
+
+  public Command AutoShoot() {
+    return Commands.sequence(
+        runOnce(() -> m_flywheelMotor.set(-0.51)),   // spin up flywheel
+        Commands.waitSeconds(1.5),                    // let it reach speed
+        runOnce(() -> {
+            m_kickerMotor.set(0.5);                  // feed the note
+            m_auxKickerMotor.set(-0.44);
+        }),
+        Commands.waitSeconds(1.5)                     // hold until note exits
+    ).finallyDo((interrupted) -> {
+        m_flywheelMotor.set(0.0);
+        m_kickerMotor.set(0.0);
+        m_auxKickerMotor.set(0.0);
+    });
+}
 }
