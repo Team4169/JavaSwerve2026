@@ -53,10 +53,10 @@ public class Shooter extends SubsystemBase {
     return startEnd(this::startKicker, this::stopKicker);
   }
   public Command AutoShooterRun() {
-    return startEnd(this::AutoShooterStart, this::AutoShooterStop);
+    return run(this::AutoShooterStart);
   }
   public Command AutoShooterEnd() {//might need to remove the
-    return startEnd(this::AutoShooterRun, this::AutoShooterStop);
+    return run(this::AutoShooterStop);
   }
   public boolean exampleCondition() {
     return false;
