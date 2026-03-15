@@ -80,7 +80,7 @@ public class Shooter extends SubsystemBase {
 
   private void startFlywheelMotor() {
     m_flywheelMotor.set(-Math.abs(m_operatorController.getLeftY()));
-     // -0.51 before variable shooter power
+     // -0.51 before v  ariable shooter power
      //m_flywheelMotor.set(-0.51);
   }
 
