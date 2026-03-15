@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
-
+import edu.wpi.first.wpilibj2.command.Commands;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
 
   private void startFeedMotors() {
     m_kickerMotor.set(0.5);
-    m_auxKickerMotor.set(-0.44);
+    m_auxKickerMotor.set(0.44);
   }
 
   private void stopFeedMotors() {
@@ -95,7 +95,7 @@ public class Shooter extends SubsystemBase {
 
   private void startKicker() {//added 4pm
     m_kickerMotor.set(0.4);
-    m_auxKickerMotor.set(0.6);
+    m_auxKickerMotor.set(-0.6);
     m_flywheelMotor.set(-0.51);
   }
 
