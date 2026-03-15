@@ -14,7 +14,7 @@
     "id": 52
   },
   "encoder": {
-    "type": "sparkmax_analog",
+    "type": "none",
     "id": 52
   },
   "inverted": {

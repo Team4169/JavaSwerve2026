@@ -199,10 +199,10 @@ public class RobotContainer {
 
     // Register named commands BEFORE building auto chooser
     NamedCommands.registerCommand(
-        "shoot",
-        Commands.parallel(m_Shooter.runShooter(), m_Intake.folddownIntake()));
-    NamedCommands.registerCommand("intake", m_Intake.runIntake());
-
+        "Shoot",
+        Commands.parallel(m_Shooter.AutoShooterRun()));// m_Intake.folddownIntake()));
+    NamedCommands.registerCommand("Run Intake", m_Intake.runIntake());
+     NamedCommands.registerCommand("Deploy Intake", m_Intake.folddownIntake());//added 4pm
     // Build auto chooser AFTER named commands are registered
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -253,14 +253,19 @@ public class RobotContainer {
     m_operatorController.a().whileTrue(m_Intake.runIntakeHeld());
     m_operatorController.leftBumper().whileTrue(m_Intake.foldUpHeld());
     m_operatorController.rightBumper().whileTrue(m_Intake.foldDownHeld());
-
+    //m_operatorController.rightTrigger().whileTrue(
+    //    Commands.parallel(m_Shooter.runShooterAndFeedHeld(), m_Intake.runIntakeHeld()));
+    m_operatorController.b().whileTrue(m_Shooter.kickerExclusive());//added 4pm
+    m_operatorController.x().onTrue(m_Shooter.runShooter());//added 4pm
+    m_operatorController.leftStick().whileTrue(m_Shooter.stopShooter());
+    m_operatorController.rightStick().whileTrue(m_Intake.ReverseIntake());
     // Utility commands
-    m_operatorController.start().onTrue(
-        Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
+    //m_operatorController.start().onTrue(
+    //    Commands.runOnce(swerveSubsystem::zeroHeading, swerveSubsystem));
     // m_operatorController.b().onTrue(
     //     Commands.runOnce(swerveSubsystem::initializeToDefaultPositions, swerveSubsystem));
-    m_operatorController.x().onTrue(
-        Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
+    //m_operatorController.x().onTrue(
+    //    Commands.runOnce(swerveSubsystem::pointModulesForward, swerveSubsystem));
   }
 
   public Command getAutonomousCommand() {

@@ -14,12 +14,12 @@
     "id": 25
   },
   "encoder": {
-    "type": "attached",
+    "type": "none",
     "id": 0
   },
   "inverted": {
     "drive": true,
-    "angle": false
+    "angle": true
   },
   "absoluteEncoderInverted": false
 }

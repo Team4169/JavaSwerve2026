@@ -46,8 +46,16 @@ public class Intake extends SubsystemBase {
     return startEnd(this::startFoldDownMotor, this::stopFoldMotor);
   }
 
+  public Command ReverseIntake() {
+    return startEnd(this::startIntakeMotorRev, this::stopIntakeMotor);
+  }
+
   private void startIntakeMotor() {
-    m_intakeMotor.set(-0.8);
+    m_intakeMotor.set(-1.0);
+  }
+
+  private void startIntakeMotorRev() {
+    m_intakeMotor.set(1.0);
   }
 
   private void stopIntakeMotor() {
@@ -55,11 +63,11 @@ public class Intake extends SubsystemBase {
   }
 
   private void startFoldUpMotor() {
-    m_foldMotor.set(-0.1);
+    m_foldMotor.set(-0.6);
   }
 
   private void startFoldDownMotor() {
-    m_foldMotor.set(0.1);
+    m_foldMotor.set(0.3);
   }
 
   private void stopFoldMotor() {
