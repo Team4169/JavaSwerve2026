@@ -53,7 +53,10 @@ public class Shooter extends SubsystemBase {
     return startEnd(this::startKicker, this::stopKicker);
   }
   public Command AutoShooterRun() {
-    return run(this::AutoShooterStart).finallyDo(this::AutoShooterStop);
+    return startEnd(this::AutoShooterStart, this::AutoShooterStop);
+  }
+  public Command AutoShooterEnd() {//might need to remove the
+    return startEnd(this::AutoShooterRun, this::AutoShooterStop);
   }
   public boolean exampleCondition() {
     return false;
@@ -76,7 +79,9 @@ public class Shooter extends SubsystemBase {
   }
 
   private void startFlywheelMotor() {
-    m_flywheelMotor.set(-Math.abs(m_operatorController.getLeftY())); // -0.51 before variable shooter power
+    m_flywheelMotor.set(-Math.abs(m_operatorController.getLeftY()));
+     // -0.51 before variable shooter power
+     //m_flywheelMotor.set(-0.51);
   }
 
   private void stopFlywheelMotor() {
@@ -90,7 +95,7 @@ public class Shooter extends SubsystemBase {
 
   private void startKicker() {//added 4pm
     m_kickerMotor.set(0.4);
-    m_auxKickerMotor.set(0.4);
+    m_auxKickerMotor.set(0.6);
     m_flywheelMotor.set(-0.51);
   }
 

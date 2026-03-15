@@ -198,11 +198,10 @@ public class RobotContainer {
     System.out.println(">>> SwerveSubsystem created successfully");
 
     // Register named commands BEFORE building auto chooser
-    NamedCommands.registerCommand(
-        "Shoot",
-        Commands.parallel(m_Shooter.AutoShooterRun()));// m_Intake.folddownIntake()));
+    NamedCommands.registerCommand("Shoot", m_Shooter.AutoShooterRun());// m_Intake.folddownIntake()));
+    NamedCommands.registerCommand("Stop Shooter", m_Shooter.AutoShooterEnd());
     NamedCommands.registerCommand("Run Intake", m_Intake.runIntake());
-     NamedCommands.registerCommand("Deploy Intake", m_Intake.folddownIntake());//added 4pm
+    NamedCommands.registerCommand("Deploy Intake", m_Intake.folddownIntake());//added 4pm
     // Build auto chooser AFTER named commands are registered
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
